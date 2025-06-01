@@ -43,8 +43,9 @@ Dependencies ko alag rakhne ke liye virtual environment banayein aur activate ka
 **Windows ke liye:**
 
 ```bash
-python -m venv env
-.\env\Scripts\activate
+python -m venv venv
+.\venv\Scripts\activate
+
 ```
 
 **Mac/Linux ke liye:**
