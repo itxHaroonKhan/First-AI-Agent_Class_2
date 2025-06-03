@@ -1,146 +1,180 @@
 
+---
 
-# 🚀 Apna Pehla AI Agent Banayein 🤖
+## 🌐 Urdu-to-English Translator Agent – Powered by Gemini Flash API
 
-Ye guide aapko step-by-step batayega ke kaise aap Python aur OpenAI API ke sath apna pehla AI agent bana sakte hain. Ye guide beginners ke liye hai aur basic Python aur terminal commands ka knowledge assume karta hai.
+A respectful, minimal AI agent that **only translates Urdu to English** — no explanation, no extra content.
+
+Built with:
+
+* ⚙️ Python
+* 🤖 Gemini 2.0 Flash API (OpenAI-compatible interface)
+* 🧠 `agents` library (`Agent`, `Runner`, etc.)
+* 🔐 `.env` config for API key
 
 ---
 
-## 📋 Zaroori Cheezein
+### 💡 Features
 
-- Python 3.8 ya isse zyada version installed
-- Koi code editor (jaise VS Code)
-- [OpenAI API key](https://platform.openai.com/signup) (agar nahi hai to sign up karein)
-- (Optional) [`uv`](https://github.com/astral-sh/uv) for faster package management
+* Translates **only** Urdu to English
+* Uses **Gemini 2.0 Flash** with OpenAI-compatible endpoint
+* Ignores unrelated or non-Urdu prompts
+* Fast and accurate translations
+* Structured, beginner-friendly code
 
 ---
 
-## 🛠️ Steps to Build Your AI Agent
+## ⚙️ Setup Instructions
 
-### 1. **Project Shuru Karein**
+> 💡 Make sure Python **3.8+** is installed.
 
-*(Optional)* Agar aap `uv` (ek fast Python package manager) use kar rahe hain, to project initialize karein:
+---
 
-```bash
-uv init
-```
+### 🛠 Step-by-step Commands
 
-> **Note**: `uv init` `uvicorn` ka hissa nahi hai. Ye sirf tab use karein jab `uv` installed ho.
-
-### 2. **Project Folder Banayein**
-
-Apne AI agent ke liye ek naya folder banayein aur usme jayein:
+#### 1. (Optional) Use `uv` to manage the environment
 
 ```bash
-mkdir my_ai_agent
-cd my_ai_agent
+pip install uv
+uv venv
 ```
 
-### 3. **Virtual Environment Banayein**
+#### 2. Activate the virtual environment
 
-Dependencies ko alag rakhne ke liye virtual environment banayein aur activate karein:
-
-**Windows ke liye:**
+**Windows:**
 
 ```bash
-python -m venv venv
-.\venv\Scripts\activate
-
+venv\Scripts\activate
 ```
 
-**Mac/Linux ke liye:**
+**macOS/Linux:**
 
 ```bash
-python3 -m venv env
-source env/bin/activate
+source venv/bin/activate
 ```
 
-> **Note**: Agar aap `uv` use kar rahe hain, to virtual environment manually activate karne ki zarurat nahi. `uv` ke commands (jaise `uv run`) automatically environment handle karte hain.
-
-### 4. **Zaroori Packages Install Karein**
-
-AI agent ke liye required Python packages install karein:
+#### 3. Install required dependencies
 
 ```bash
-pip install python-dotenv openai
+uv pip install python-dotenv openai-agents
 ```
 
-Agar `uv` use kar rahe hain:
+> Or if you're not using `uv`:
 
 ```bash
-uv pip install python-dotenv openai
+pip install python-dotenv openai-agents
 ```
 
-### 5. **OpenAI API Key Hasil Karein**
-
-Apne AI agent ko OpenAI ke language models se connect karne ke liye API key chahiye:
-
-1. [OpenAI API platform](https://platform.openai.com/signup) par sign up ya log in karein.
-2. **API Keys** section mein jayein.
-3. **Create new secret key** par click karein aur key copy karein.
-4. Key ko safe rakhein aur publicly share na karein.
-
-Project folder mein `.env` file banayein aur key is tarah add karein:
+#### 4. Create a `.env` file
 
 ```
-OPENAI_API_KEY=your_openai_api_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
-### 6. **API Key Set Up Karein**
-
-Confirm karein ke `.env` file mein API key sahi se add hua hai aur project mein load ho raha hai.
-
-### 7. **AI Agent Banayein**
-
-`openai` package ka use karke ek AI agent banayein jo user ke input ke jawab mein intelligent responses de, jaise translation, question answering, ya content generation.
-
-### 8. **Language Model se Connect Karein**
-
-Apne agent ko OpenAI ke language model se connect karein, jaise:
-
-- `gpt-3.5-turbo`
-- `gpt-4` (agar aapke plan mein available ho)
-
-### 9. **Agent Chalayein**
-
-Apne Python script ko run karke agent test karein. Do tareeke hain:
-
-**Standard tareeka (virtual environment ke sath):**
+#### 5. Run the script
 
 ```bash
 python main.py
 ```
 
-**Agar `uv` use kar rahe hain:**
+---
 
-```bash
-uv run main.py
+## 📦 Code Imports & Structure
+
+Here's a detailed explanation of the core logic used in `main.py`:
+
+```python
+import os
+from dotenv import load_dotenv
+from agents import Agent, AsyncOpenAI, RunConfig, Runner, OpenAIChatCompletionsModel
 ```
 
-> **Note**: `uv run main.py` directly script chalata hai aur virtual environment ko automatically handle karta hai.
+* `os` → Used to load environment variables.
+* `load_dotenv()` → Loads `.env` file securely into the environment.
+* `Agent` → Defines the behavior of the AI (translate only).
+* `AsyncOpenAI` → Async client compatible with Gemini API.
+* `OpenAIChatCompletionsModel` → Uses Gemini Flash with OpenAI-style interface.
+* `Runner.run()` → Executes the AI with input/output management.
 
 ---
 
-## 📝 Zaroori Baatein
+### 🧠 Code Sample
 
-- `.env` file mein `OPENAI_API_KEY` ko apni actual API key se replace karein.
-- Agar `python main.py` use kar rahe hain, to pehle virtual environment activate karein. `uv run main.py` ke liye ye zaruri nahi.
-- Advanced features ke liye, jaise multiple inputs ya custom prompts, OpenAI documentation dekhein.
-- Koi issue aaye to API key, internet connection, ya package installations check karein.
+```python
+load_dotenv()
+api_key = os.getenv("GEMINI_API_KEY")
+
+client = AsyncOpenAI(
+    api_key=api_key,
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/"
+)
+
+model = OpenAIChatCompletionsModel(
+    model="gemini-2.0-flash",
+    openai_client=client
+)
+
+config = RunConfig(
+    model=model,
+    model_provider=client,
+    tracing_disabled=True
+)
+
+agent = Agent(
+    name="UrduToEnglishTranslator",
+    instructions="""
+    Translate the given Urdu text into English. Do not explain, just provide the translation.
+    Do not answer anything unrelated to Urdu-English translation.
+    """
+)
+
+output = Runner.run_sync(agent, "میں Python programming سیکھ رہا ہوں تاکہ Full Stack Developer بن سکوں۔", config)
+
+print("🔤 Translation:", output.final_output)
+```
 
 ---
 
-## 🔧 Troubleshooting
+## 🧪 Example `.env` File
 
-- **API Key Error**: Ensure karein ke `.env` file project ke root mein hai aur key sahi format mein hai.
-- **Module Not Found**: Check karein ke `python-dotenv` aur `openai` virtual environment mein installed hain.
-- **Rate Limits**: Agar API rate limit ka issue aaye, to apna OpenAI plan check karein ya [x.ai/grok](https://x.ai/grok) ya [help.x.com](https://help.x.com/en/using-x/x-premium) par upgrade karein.
+```
+GEMINI_API_KEY=AIzaSyXXXXXX-Your-Gemini-API-Key
+```
 
 ---
 
-## 🌟 Agle Qadam
+## 📋 requirements.txt (optional)
 
-- Apne agent ko aur behtar banayein, jaise multiple languages translate karna ya complex tasks add karna.
-- [OpenAI API documentation](https://platform.openai.com/docs) explore karein.
-- Aur AI development ke liye [xAI API services](https://x.ai/api) check karein.
+```txt
+python-dotenv
+openai-agents
+```
+
+Generate it with:
+
+```bash
+pip freeze > requirements.txt
+```
+
+---
+
+## 🤖 Agent Behavior
+
+* Name: `UrduToEnglishTranslator`
+* Only does: Urdu → English translation
+* Will **not** respond to:
+
+  * English-only inputs
+  * Other languages
+  * Unrelated questions
+* Behavior: Clear, Direct, No Explanations
+
+---
+
+## 👨‍💻 Created By
+
+**Haroon Rasheed** – A focused developer building useful AI tools with modern APIs and Python.
+
+---
+
 
